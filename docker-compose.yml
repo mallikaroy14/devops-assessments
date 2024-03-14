@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: devops-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: products
+    ports:
+      - "5434:5432"
+    volumes:
+      - /Users/mallikaroy/gitlearn/devops-volume :/var/lib/postgresql/data
+  app:
+    build: .
+    image: devops-app
+    container_name: devops-app-cont
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/products
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
